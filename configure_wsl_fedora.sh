@@ -11,15 +11,15 @@ while true; do
     [Nn]* ) CREATE_USER="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
-
-  if [ $CREATE_USER = "true" ]; then
-    while true; do
-      echo ""
-      read -p "Username: " NEW_USERNAME
-      read -p "Password: " NEW_USER_PASSWORD
-    done
-  fi
 done
+
+if [ $CREATE_USER = "true" ]; then
+  while true; do
+    echo ""
+    read -p "Username: " NEW_USERNAME
+    read -p "Password: " NEW_USER_PASSWORD
+  done
+fi
 
 while true; do
   echo ""

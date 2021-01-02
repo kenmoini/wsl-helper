@@ -21,8 +21,9 @@ Double-check by running `wsl -l -v` in the Powershell terminal.
 
 ### 3) Configure the new Fedora WSL Distribution
 
-This is the part where you install all the languages you want, create a new user, configure it at you'd like - thankfully you can do that following the creation of the WSL Distro with one command:
+This is the part where you install all the languages you want, create a new user, configure it at you'd like - thankfully you can do that following the creation of the WSL Distro with the following:
 
-`wsl -d Fedora33 curl -sSL -o /opt/wsl_setup.sh https://raw.githubusercontent.com/kenmoini/wsl-helper/main/configure_wsl_fedora.sh && chmod +x /opt/wsl_setup.sh && . /opt/wsl_setup.sh`
+`wsl -d Fedora33 curl -sSL -o /opt/wsl_setup.sh https://raw.githubusercontent.com/kenmoini/wsl-helper/main/configure_wsl_fedora.sh`
+`wsl -d Fedora33 bash /opt/wsl_setup.sh`
 
 It will prompt you for some input, by default it sets up a pretty robust development environment!
