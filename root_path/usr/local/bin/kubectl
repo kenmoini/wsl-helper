@@ -1,0 +1,39 @@
+#!/bin/bash
+
+case $KUBECTL_VERSION in
+    1.10|1.10+|1.10.*)
+        KUBECTL_VERSION=1.10
+        ;;
+    1.11|1.11+|1.11.*)
+        KUBECTL_VERSION=1.11
+        ;;
+    1.12|1.12+|1.12.*)
+        KUBECTL_VERSION=1.12
+        ;;
+    1.13|1.13+|1.13.*)
+        KUBECTL_VERSION=1.13
+        ;;
+    1.14|1.14+|1.14.*)
+        KUBECTL_VERSION=1.14
+        ;;
+    1.16|1.16+|1.16.*)
+        KUBECTL_VERSION=1.16
+        ;;
+    1.17|1.17+|1.17.*)
+        KUBECTL_VERSION=1.17
+        ;;
+    1.18|1.18+|1.18.*)
+        KUBECTL_VERSION=1.18
+        ;;
+    1.19|1.19+|1.19.*)
+        KUBECTL_VERSION=1.19
+        ;;
+    1.20|1.20+|1.20.*)
+        KUBECTL_VERSION=1.20
+        ;;
+    *)
+        KUBECTL_VERSION=1.18
+        ;;
+esac
+
+exec /usr/local/bin/kubectl-$KUBECTL_VERSION "$@"

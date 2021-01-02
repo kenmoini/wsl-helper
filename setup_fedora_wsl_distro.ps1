@@ -1,0 +1,50 @@
+$fedora_major_version = "33"
+$fedora_version = "33.20201230"
+$wsl_distro_root_path = "C:\WSLDistros"
+
+# Create Temp dir
+if (!(Test-Path "C:\Temp\")) {
+    New-Item -ItemType directory -Path C:\Temp
+}
+
+# Create Temp Sub dir
+if (!(Test-Path "C:\Temp\fedoraWSL\")) {
+    New-Item -ItemType directory -Path C:\Temp\fedoraWSL
+}
+
+# Create Temp Sub dir for xz
+if (!(Test-Path "C:\Temp\fedoraWSL\xz\")) {
+    New-Item -ItemType directory -Path C:\Temp\fedoraWSL\xz
+}
+
+if (!(Test-Path "C:\Temp\fedoraWSL\xz\xz.zip")) {
+  # Get xz for windows
+  Invoke-WebRequest -Uri "https://tukaani.org/xz/xz-5.2.5-windows.zip" -OutFile "C:\Temp\fedoraWSL\xz\xz.zip"
+
+  # Unzip xz for Windows
+  Expand-Archive -LiteralPath 'C:\Temp\fedoraWSL\xz\xz.zip' -DestinationPath C:\Temp\fedoraWSL\xz
+}
+
+if (!(Test-Path "C:\Temp\fedoraWSL\fedora_root.tar.xz")) {
+  # Get Fedora system root file
+  Invoke-WebRequest -Uri "https://github.com/fedora-cloud/docker-brew-fedora/raw/$fedora_major_version/x86_64/fedora-$fedora_version-x86_64.tar.xz" -OutFile "C:\Temp\fedoraWSL\fedora_root.tar.xz"
+
+  # Run xz against the system root file
+  C:\Temp\fedoraWSL\xz\bin_x86-64\xz.exe -df C:\Temp\fedoraWSL\fedora_root.tar.xz
+}
+
+# Create WSL Distro directory if needed
+if (!(Test-Path $wsl_distro_root_path)) {
+    New-Item -ItemType directory -Path $wsl_distro_root_path
+}
+if (!(Test-Path "$wsl_distro_root_path/Fedora$fedora_major_version")) {
+    New-Item -ItemType directory -Path "$wsl_distro_root_path/Fedora$fedora_major_version"
+}
+
+# Import the base system root
+if (Test-Path "C:\Temp\fedoraWSL\fedora_root.tar") {
+    wsl --import Fedora$fedora_major_version $wsl_distro_root_path/Fedora$fedora_major_version C:\Temp\fedoraWSL\fedora_root.tar
+}
+
+# Clean up
+Remove-Item -LiteralPath "C:\Temp\fedoraWSL" -Force -Recurse

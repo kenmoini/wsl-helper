@@ -1,0 +1,27 @@
+
+export ZSH="$HOME/.oh-my-zsh"
+
+eval $(thefuck --alias)
+
+ZSH_THEME="agnoster"
+DISABLE_AUTO_UPDATE="true"
+ZSH_DISABLE_COMPFIX="true"
+plugins=(git oc ansible kubectl sudo thefuck)
+
+if [ -f /etc/profile ]; then
+    . /etc/profile
+fi
+
+source $ZSH/oh-my-zsh.sh
+
+eval `dircolors ~/.dircolors`
+
+#export PATH=`echo $PATH | tr ':' '\n' | grep -v '/mnt/c/Program Files' | tr '\n' ':' | sed 's/.$//'`
+#export PATH=`echo $PATH | tr ':' '\n' | grep -v /mnt/c/Users/ | tr '\n' ':' | sed 's/.$//'`
+#export PATH=`echo $PATH | tr ':' '\n' | grep -v /mnt/c/ProgramData | tr '\n' ':' | sed 's/.$//'`
+
+export PATH=`echo $PATH | tr ':' '\n' | grep -v /mnt/c | tr '\n' ':' | sed 's/.$//'`
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
