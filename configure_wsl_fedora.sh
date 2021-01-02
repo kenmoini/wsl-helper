@@ -11,16 +11,15 @@ while true; do
     [Nn]* ) CREATE_USER="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
-done
 
-## Create a user - DONE
-if [ $CREATE_USER = "true" ]; then
-  while true; do
-    echo ""
-    read -p "Username: " NEW_USERNAME
-    read -p "Password: " NEW_USER_PASSWORD
-  done
-fi
+  if [ $CREATE_USER = "true" ]; then
+    while true; do
+      echo ""
+      read -p "Username: " NEW_USERNAME
+      read -p "Password: " NEW_USER_PASSWORD
+    done
+  fi
+done
 
 while true; do
   echo ""
@@ -122,6 +121,11 @@ if [ $INSTALL_ZSH = "true" ]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   cp -R ~/.local /etc/skel
   cp -R ~/.oh-my-zsh /etc/skel
+  curl -o /etc/skel/.zshrc https://raw.githubusercontent.com/kenmoini/wsl-helper/main/config/zshrc
+  cp /etc/skel/.zshrc ~/.zshrc
+
+  echo 'export PATH=$HOME/.local/bin:$PATH' > /etc/profile.d/local_bin.sh
+  chmod +x /etc/profile.d/local_bin.sh
 fi
 
 if [ $INSTALL_GOLANG = "true" ]; then
@@ -159,15 +163,15 @@ if [ $INSTALL_PHP = "true" ]; then
   php -r "unlink('composer-setup.php');"
   mv composer.phar /usr/local/bin/composer
 
-  echo 'export PATH=$HOME/.composer/vendor/bin:$PATH' > /etc/profile.d/composer_completion.sh
-  chmod +x /etc/profile.d/composer_completion.sh
+  echo 'export PATH=$HOME/.composer/vendor/bin:$PATH' > /etc/profile.d/composer_bin.sh
+  chmod +x /etc/profile.d/composer_bin.sh
 fi
 
 if [ $INSTALL_NODEJS = "true" ]; then
   dnf install -y nodejs npm yarnpkg
 
-  echo 'export PATH=$HOME/.local/bin:$HOME/.yarn/bin:$PATH' > /etc/profile.d/nodejs_completion.sh
-  chmod +x /etc/profile.d/nodejs_completion.sh
+  echo 'export PATH=$HOME/.yarn/bin:$PATH' > /etc/profile.d/nodejs_bin.sh
+  chmod +x /etc/profile.d/nodejs_bin.sh
 fi
 
 if [ $INSTALL_K8S_OCP = "true" ]; then
