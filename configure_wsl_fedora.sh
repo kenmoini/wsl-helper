@@ -5,8 +5,8 @@ echo "This will configure a new WSL Fedora instance with some basics to make it 
 
 while true; do
   echo ""
-  read -n 1 -p "Create a new user? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Create a new user? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) CREATE_USER="true"; break;;
     [Nn]* ) CREATE_USER="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -23,8 +23,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install basic development packages? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install basic development packages? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_DEV_PACKAGES="true"; break;;
     [Nn]* ) INSTALL_DEV_PACKAGES="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -33,8 +33,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install Python 3? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install Python 3? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_PYTHON3="true"; break;;
     [Nn]* ) INSTALL_PYTHON3="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -43,8 +43,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install Ansible? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install Ansible? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_ANSIBLE="true"; break;;
     [Nn]* ) INSTALL_ANSIBLE="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -53,8 +53,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install PHP? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install PHP? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_PHP="true"; break;;
     [Nn]* ) INSTALL_PHP="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -63,8 +63,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install NodeJS? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install NodeJS? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_NODEJS="true"; break;;
     [Nn]* ) INSTALL_NODEJS="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -73,8 +73,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install GOLANG? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install GOLANG? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_GOLANG="true"; break;;
     [Nn]* ) INSTALL_GOLANG="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -83,8 +83,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install ZSH and Oh My ZSH? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install ZSH and Oh My ZSH? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_ZSH="true"; break;;
     [Nn]* ) INSTALL_ZSH="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -93,8 +93,8 @@ done
 
 while true; do
   echo ""
-  read -n 1 -p "Install Kubernetes and OpenShift binaries? [Y/n] " yn
-  case $yn in
+  read -n 1 -p "Install Kubernetes and OpenShift binaries? [Y/n] " YNPROMPT
+  case $YNPROMPT in
     [Yy]* ) INSTALL_K8S_OCP="true"; break;;
     [Nn]* ) INSTALL_K8S_OCP="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
