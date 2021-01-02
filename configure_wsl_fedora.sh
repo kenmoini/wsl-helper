@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 echo "Welcome to the Windows Subsystem for Linux configuration script!"
 echo "This will configure a new WSL Fedora instance with some basics to make it feel a little more like home!"
