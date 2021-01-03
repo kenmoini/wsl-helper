@@ -34,7 +34,7 @@ Now you should have a new WSL Distribution based on Fedora!
 ***Alternatively***, you could also download the Powershell script with this one liner and execute after inspection and modification if you'd like:
 
 ```powershell
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/kenmoini/wsl-helper/main/setup_fedora_wsl_distro.ps1" -OutFile ".\setup_fedora_wsl_distro.ps1"`
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/kenmoini/wsl-helper/main/setup_fedora_wsl_distro.ps1" -OutFile ".\setup_fedora_wsl_distro.ps1"
 ```
 
 ### 3) Configure the new Fedora WSL Distribution
