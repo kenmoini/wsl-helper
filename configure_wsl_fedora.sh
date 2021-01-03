@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+cd $HOME
+LANG=en_US.UTF-8
+
 function promptNewUserPasswordAndConfirmation {
   echo ""
   read -s -p "Password: " NEW_USER_PASSWORD
@@ -86,7 +89,8 @@ while true; do
   echo ""
   read -n 1 -p "Install GOLANG? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_GOLANG="true"; break;;
+    [Yy] ) INSTALL_GOLANG="true"; echo "" break;;
+    "" ) INSTALL_GOLANG="true"; break;;
     [Nn] ) INSTALL_GOLANG="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
@@ -96,7 +100,8 @@ while true; do
   echo ""
   read -n 1 -p "Install ZSH and Oh My ZSH? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_ZSH="true"; break;;
+    [Yy] ) INSTALL_ZSH="true"; echo "" break;;
+    "" ) INSTALL_ZSH="true"; break;;
     [Nn] ) INSTALL_ZSH="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
@@ -106,7 +111,8 @@ while true; do
   echo ""
   read -n 1 -p "Install Kubernetes and OpenShift binaries? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_K8S_OCP="true"; break;;
+    [Yy] ) INSTALL_K8S_OCP="true"; echo "" break;;
+    "" ) INSTALL_K8S_OCP="true"; break;;
     [Nn] ) INSTALL_K8S_OCP="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
@@ -133,6 +139,13 @@ if [ $INSTALL_DEV_PACKAGES = "true" ]; then
   echo "Installing Developmental Tools..."
 
   dnf install -yq "@Development Tools"
+fi
+
+if [ $INSTALL_PYTHON3 = "true" ]; then
+  echo ""
+  echo "Installing Python 3..."
+
+  dnf install -qy python3-pip python3 python3-argcomplete
 fi
 
 ## ZSH
@@ -163,13 +176,6 @@ if [ $INSTALL_GOLANG = "true" ]; then
   echo 'export GOPATH=$HOME/go' > /etc/profile.d/golang_setup.sh
   echo 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin' >> /etc/profile.d/golang_setup.sh
   chmod +x /etc/profile.d/golang_setup.sh
-fi
-
-if [ $INSTALL_PYTHON3 = "true" ]; then
-  echo ""
-  echo "Installing Python 3..."
-
-  dnf install -qy python3-pip python3 python3-argcomplete
 fi
 
 if [ $INSTALL_ANSIBLE = "true" ]; then
