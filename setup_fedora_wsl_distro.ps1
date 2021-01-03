@@ -3,7 +3,7 @@ $fedora_version = "33.20201230"
 $wsl_distro_root_path = "C:\WSLDistros"
 
 param (
-  [switch]$reset = $false
+  [switch]$reset = $false,
   [switch]$remove = $false
 )
 if ($reset) {
