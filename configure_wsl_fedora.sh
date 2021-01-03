@@ -85,10 +85,9 @@ while true; do
 done
 
 while true; do
-  echo ""
   read -n 1 -p "Install GOLANG? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_GOLANG="true"; echo "" break;;
+    [Yy] ) INSTALL_GOLANG="true" echo ""; break;;
     "" ) INSTALL_GOLANG="true"; break;;
     [Nn] ) INSTALL_GOLANG="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -96,10 +95,9 @@ while true; do
 done
 
 while true; do
-  echo ""
   read -n 1 -p "Install ZSH and Oh My ZSH? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_ZSH="true"; echo "" break;;
+    [Yy] ) INSTALL_ZSH="true" echo ""; break;;
     "" ) INSTALL_ZSH="true"; break;;
     [Nn] ) INSTALL_ZSH="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -107,10 +105,9 @@ while true; do
 done
 
 while true; do
-  echo ""
   read -n 1 -p "Install Kubernetes and OpenShift binaries? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_K8S_OCP="true"; echo "" break;;
+    [Yy] ) INSTALL_K8S_OCP="true" echo ""; break;;
     "" ) INSTALL_K8S_OCP="true"; break;;
     [Nn] ) INSTALL_K8S_OCP="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
@@ -118,7 +115,6 @@ while true; do
 done
 
 while true; do
-  echo ""
   read -n 2 -p "Language pack to install [en] " LANGPACK
   case $LANGPACK in
     "" ) INSTALL_LANGPACK="en"; break;;
