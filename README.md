@@ -48,7 +48,9 @@ wsl -d Fedora33 bash /opt/wsl_setup.sh
 
 It will prompt you for some input, by default it sets up a pretty robust development environment!
 
-You may reset the whole environment and start from scratch by running the single command: `.\setup_fedora_wsl_distro.ps1 -mode reset`
+### 4) Starting Over
+
+You may reset the whole environment and start from scratch by running the Powershell script from Step 2 as such: `.\setup_fedora_wsl_distro.ps1 -reset [ -keepCache ]`
 
 ## FAQs
 
