@@ -171,12 +171,7 @@ if [[ $INSTALL_ZSH == "true" ]]; then
   git clone --quiet https://github.com/powerline/fonts.git --depth=1
   cd fonts && ./install.sh && cd .. && rm -rf fonts/
   pip3 install thefuck
-  export RUNZSH="no"
-  export CHSH="yes"
-  curl -o ~/oh-my-zsh.install.sh -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-  chmod +x ~/oh-my-zsh.install.sh
-  ~/oh-my-zsh.install.sh
-  rm ~/oh-my-zsh.install.sh
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   cp -R ~/.local /etc/skel
   cp -R ~/.oh-my-zsh /etc/skel
   curl -sL -o /etc/skel/.zshrc https://raw.githubusercontent.com/kenmoini/wsl-helper/main/config/zshrc
