@@ -125,7 +125,7 @@ dnf update -yq
 echo ""
 echo "Installing basic packages..."
 
-dnf install -qy chsh wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user
+dnf install -qy wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user
 
 ## Development Packages - DONE
 if [ $INSTALL_DEV_PACKAGES = "true" ]; then
