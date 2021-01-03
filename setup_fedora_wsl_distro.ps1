@@ -2,13 +2,16 @@ $fedora_major_version = "33"
 $fedora_version = "33.20201230"
 $wsl_distro_root_path = "C:\WSLDistros"
 
-param ($mode='')
-if ($mode == "reset") {
+param (
+  [switch]$reset = $false
+  [switch]$remove = $false
+)
+if ($reset) {
   echo ""
   echo "Removing Fedora$fedora_major_version from current WSL distributions and resetting..."
   wsl --unregister "Fedora$fedora_major_version"
 }
-if ($mode == "remove") {
+if ($remove) {
   echo ""
   echo "Removing Fedora$fedora_major_version from current WSL distributions and resetting..."
   wsl --unregister "Fedora$fedora_major_version"
@@ -86,7 +89,7 @@ echo ""
 echo "Setup complete!"
 echo ""
 
-if ($mode == "reset") {
+if ($reset) {
   wsl -d "Fedora$fedora_major_version" curl -sSL -o /opt/wsl_setup.sh https://raw.githubusercontent.com/kenmoini/wsl-helper/main/configure_wsl_fedora.sh
   wsl -d "Fedora$fedora_major_version" bash /opt/wsl_setup.sh
 }
