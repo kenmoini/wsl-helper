@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+function promptNewUserPasswordAndConfirmation {
+  echo ""
+  read -s -p "Password: " NEW_USER_PASSWORD
+  echo ""
+  read -s -p "Confirm Password: " NEW_USER_PASSWORD_CONFIRM
+  if [ $NEW_USER_PASSWORD != $NEW_USER_PASSWORD_CONFIRM ]; then
+    echo ""
+    echo "PASSWORDS MUST MATCH!"
+    promptNewUserPasswordAndConfirmation
+  fi
+}
+
 echo "Welcome to the Windows Subsystem for Linux configuration script!"
 echo "This will configure a new WSL Fedora instance with some basics to make it feel a little more like home!"
 
@@ -7,28 +19,23 @@ while true; do
   echo ""
   read -n 1 -p "Create a new user? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) CREATE_USER="true"; break;;
-    [Nn]* ) CREATE_USER="false"; break;;
+    [Yy] | "" ) CREATE_USER="true"; break;;
+    [Nn] ) CREATE_USER="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
-
 if [ $CREATE_USER = "true" ]; then
   echo ""
   read -p "Username: " NEW_USERNAME
-  read -s -p "Password: " NEW_USER_PASSWORD
-  read -s -p "Confirm Password: " NEW_USER_PASSWORD_CONFIRM
-  if [ $NEW_USER_PASSWORD -ne $NEW_USER_PASSWORD_CONFIRM ]; then
-    exit "PASSWORDS MUST MATCH!"
-  fi
+  promptNewUserPasswordAndConfirmation
 fi
 
 while true; do
   echo ""
   read -n 1 -p "Install basic development packages? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_DEV_PACKAGES="true"; break;;
-    [Nn]* ) INSTALL_DEV_PACKAGES="false"; break;;
+    [Yy] | "" ) INSTALL_DEV_PACKAGES="true"; break;;
+    [Nn] ) INSTALL_DEV_PACKAGES="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -37,8 +44,8 @@ while true; do
   echo ""
   read -n 1 -p "Install Python 3? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_PYTHON3="true"; break;;
-    [Nn]* ) INSTALL_PYTHON3="false"; break;;
+    [Yy] | "" ) INSTALL_PYTHON3="true"; break;;
+    [Nn] ) INSTALL_PYTHON3="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -47,8 +54,8 @@ while true; do
   echo ""
   read -n 1 -p "Install Ansible? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_ANSIBLE="true"; break;;
-    [Nn]* ) INSTALL_ANSIBLE="false"; break;;
+    [Yy] | "" ) INSTALL_ANSIBLE="true"; break;;
+    [Nn] ) INSTALL_ANSIBLE="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -57,8 +64,8 @@ while true; do
   echo ""
   read -n 1 -p "Install PHP? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_PHP="true"; break;;
-    [Nn]* ) INSTALL_PHP="false"; break;;
+    [Yy] | "" ) INSTALL_PHP="true"; break;;
+    [Nn] ) INSTALL_PHP="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -67,8 +74,8 @@ while true; do
   echo ""
   read -n 1 -p "Install NodeJS? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_NODEJS="true"; break;;
-    [Nn]* ) INSTALL_NODEJS="false"; break;;
+    [Yy] | "" ) INSTALL_NODEJS="true"; break;;
+    [Nn] ) INSTALL_NODEJS="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -77,8 +84,8 @@ while true; do
   echo ""
   read -n 1 -p "Install GOLANG? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_GOLANG="true"; break;;
-    [Nn]* ) INSTALL_GOLANG="false"; break;;
+    [Yy] | "" ) INSTALL_GOLANG="true"; break;;
+    [Nn] ) INSTALL_GOLANG="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -87,8 +94,8 @@ while true; do
   echo ""
   read -n 1 -p "Install ZSH and Oh My ZSH? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_ZSH="true"; break;;
-    [Nn]* ) INSTALL_ZSH="false"; break;;
+    [Yy] | "" ) INSTALL_ZSH="true"; break;;
+    [Nn] ) INSTALL_ZSH="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -97,8 +104,8 @@ while true; do
   echo ""
   read -n 1 -p "Install Kubernetes and OpenShift binaries? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]* ) INSTALL_K8S_OCP="true"; break;;
-    [Nn]* ) INSTALL_K8S_OCP="false"; break;;
+    [Yy] | "" ) INSTALL_K8S_OCP="true"; break;;
+    [Nn] ) INSTALL_K8S_OCP="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
