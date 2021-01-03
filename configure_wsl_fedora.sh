@@ -118,8 +118,22 @@ while true; do
   esac
 done
 
+while true; do
+  echo ""
+  read -n 2 -p "Language pack to install [en] " LANGPACK
+  case $LANGPACK in
+    "" ) INSTALL_LANGPACK="en"; break;;
+    * ) INSTALL_LANGPACK=$LANGPACK;;
+  esac
+done
+
 echo ""
 echo "Starting..."
+
+echo ""
+echo "Installing ${INSTALL_LANGPACK} language packages..."
+
+dnf install -qy langpacks-$INSTALL_LANGPACK glibc-langpack-$INSTALL_LANGPACK
 
 ## Do a basic system update - DONE
 echo ""
