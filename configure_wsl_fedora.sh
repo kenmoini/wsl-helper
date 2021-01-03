@@ -163,7 +163,8 @@ dnf update -yq
 echo ""
 echo "Installing basic packages..."
 
-dnf install -qy wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user
+dnf -yq copr enable wslutilities/wslu
+dnf install -qy wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user cracklib-dicts wslu
 
 ## Development Packages - DONE
 echo ""
@@ -387,8 +388,13 @@ if [[ $CREATE_USER == "true" ]]; then
   fi
 
   if [[ $INSTALL_ZSH == "true" ]]; then
+    echo "Setting user shell to ZSH..."
     chsh --shell $(which zsh) $NEW_USERNAME
   fi
+
+  echo "Setting user as default WSL user..."
+  echo "[user]" > /etc/wsl.conf
+  echo "default=$NEW_USERNAME" >> /etc/wsl.conf
 else
   echo ""
   echo "...SKIPPING..."
