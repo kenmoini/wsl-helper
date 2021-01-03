@@ -9,9 +9,13 @@ In order to quickly deploy a Fedora 33 distribution to WSL:
 
 - A Windows 10 system with Powershell that can run Windows Subsystem for Linux: https://docs.microsoft.com/en-us/windows/wsl/faq#what-windows-skus-is-wsl-included-in
 
+## Deployment
+
 ### 1) Enable WSL
 
-In Step 2, the Powershell script that is run will check for WSL being installed and if not found will install it, or if you'd like to do so manually, see the steps here: https://docs.microsoft.com/en-us/windows/wsl/install-win10#manual-installation-steps
+In Step 2, the Powershell script that is run will check for WSL being installed and if not found will install WSL v1.
+
+If you'd like install manually beforehand or complete additional instructions to install WSL v2, see the steps here: https://docs.microsoft.com/en-us/windows/wsl/install-win10#manual-installation-steps
 
 ### 2) Create a new Fedora WSL Distribution
 
@@ -35,3 +39,8 @@ This is the part where you install all the languages you want, create a new user
 `wsl -d Fedora33 bash /opt/wsl_setup.sh`
 
 It will prompt you for some input, by default it sets up a pretty robust development environment!
+
+## FAQs
+
+#### What version of WSL has this been tested on?
+This has been tested on Windows 10 Pro, WSL v1.  It should support WSL v2 just fine, I happen to not be able to run v2 since I use VMWare Workstation and they can't cohabitate.
