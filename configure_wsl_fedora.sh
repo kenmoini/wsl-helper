@@ -22,6 +22,7 @@ echo "Welcome to the Windows Subsystem for Linux configuration script!"
 echo "This will configure a new WSL Fedora instance with some basics to make it feel a little more like home!"
 
 while true; do
+  echo ""
   read -n 2 -p "Language pack to install [en] " LANGPACK
   case $LANGPACK in
     "" ) export INSTALL_LANGPACK="en"; break;;
@@ -167,13 +168,18 @@ if [[ $INSTALL_ZSH == "true" ]]; then
   echo "Installing ZSH, Oh My ZSH, Powerline fonts, thefuck..."
 
   dnf install -qy zsh
-  git clone https://github.com/powerline/fonts.git --depth=1
+  git clone --quiet https://github.com/powerline/fonts.git --depth=1
   cd fonts && ./install.sh && cd .. && rm -rf fonts/
   pip3 install thefuck
-  RUNZSH=no CHSH=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  export RUNZSH="no"
+  export CHSH="yes"
+  curl -o ~/oh-my-zsh.install.sh -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+  chmod +x ~/oh-my-zsh.install.sh
+  ~/oh-my-zsh.install.sh
+  rm ~/oh-my-zsh.install.sh
   cp -R ~/.local /etc/skel
   cp -R ~/.oh-my-zsh /etc/skel
-  curl -o /etc/skel/.zshrc https://raw.githubusercontent.com/kenmoini/wsl-helper/main/config/zshrc
+  curl -sL -o /etc/skel/.zshrc https://raw.githubusercontent.com/kenmoini/wsl-helper/main/config/zshrc
   cp /etc/skel/.zshrc ~/.zshrc
 
   echo 'export PATH=$HOME/.local/bin:$PATH' > /etc/profile.d/local_bin.sh
@@ -207,7 +213,7 @@ if [[ $INSTALL_ANSIBLE == "true" ]]; then
   register-python-argcomplete ansible-pull | tee /etc/bash_completion.d/python-ansible-pull >/dev/null
   register-python-argcomplete ansible-vault | tee /etc/bash_completion.d/python-ansible-vault >/dev/null
 
-  sudo chmod +x /etc/bash_completion.d/python-ansible*
+  sudo chmod +x /etc/bash_completion.d/python-a*
 fi
 
 if [[ $INSTALL_PHP == "true" ]]; then
@@ -240,21 +246,21 @@ if [[ $INSTALL_K8S_OCP == "true" ]]; then
 
   ## Install OpenShift clients.
   curl -sL -o /tmp/oc-3.10.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.10.176/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-3.10 -zxf /tmp/oc-3.10.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-3.10.tar.gz && mv /tmp/oc /usr/local/bin/oc-3.10
   curl -sL -o /tmp/oc-3.11.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.11.153/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-3.11 -zxf /tmp/oc-3.11.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-3.11.tar.gz && mv /tmp/oc /usr/local/bin/oc-3.11
   curl -sL -o /tmp/oc-4.1.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.1/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-4.1 -zxf /tmp/oc-4.1.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-4.1.tar.gz && mv /tmp/oc /usr/local/bin/oc-4.1
   curl -sL -o /tmp/oc-4.2.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.2/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-4.2 -zxf /tmp/oc-4.2.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-4.2.tar.gz && mv /tmp/oc /usr/local/bin/oc-4.2
   curl -sL -o /tmp/oc-4.3.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.3/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-4.3 -zxf /tmp/oc-4.3.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-4.3.tar.gz && mv /tmp/oc /usr/local/bin/oc-4.3
   curl -sL -o /tmp/oc-4.4.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.4/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-4.4 -zxf /tmp/oc-4.4.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-4.4.tar.gz && mv /tmp/oc /usr/local/bin/oc-4.4
   curl -sL -o /tmp/oc-4.5.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.5/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-4.5 -zxf /tmp/oc-4.5.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-4.5.tar.gz && mv /tmp/oc /usr/local/bin/oc-4.5
   curl -sL -o /tmp/oc-4.6.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.6/linux/oc.tar.gz
-  tar -C /usr/local/bin/oc-4.6 -zxf /tmp/oc-4.5.tar.gz oc
+  tar -C /tmp -zxf /tmp/oc-4.5.tar.gz && mv /tmp/oc /usr/local/bin/oc-4.6
   rm /tmp/oc*.tar.gz
 
   curl -sL -o /usr/local/bin/odo-0.0.16 https://github.com/openshift/odo/releases/download/v0.0.16/odo-linux-amd64

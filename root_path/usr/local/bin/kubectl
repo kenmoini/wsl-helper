@@ -32,7 +32,7 @@ case $KUBECTL_VERSION in
         KUBECTL_VERSION=1.20
         ;;
     *)
-        KUBECTL_VERSION=1.18
+        KUBECTL_VERSION=1.20
         ;;
 esac
 

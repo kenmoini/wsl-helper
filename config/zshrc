@@ -9,13 +9,33 @@ ZSH_DISABLE_COMPFIX="true"
 plugins=(git oc ansible kubectl sudo thefuck)
 
 if [ -f /etc/profile ]; then
-    . /etc/profile
+  # . /etc/profile
 fi
+
+if [ $UID -gt 199 ] && [ "`/usr/bin/id -gn`" = "`/usr/bin/id -un`" ]; then
+  umask 002
+else
+  umask 022
+fi
+
+SHELL=/usr/bin/zsh
+# Only display echos from profile.d scripts if we are no login shell
+# and interactive - otherwise just process them to set envvars
+for i in /etc/profile.d/*.sh; do
+  if [ -r "$i" ]; then
+    if [ "$PS1" ]; then
+      . "$i"
+    else
+      . "$i" >/dev/null
+    fi
+  fi
+done
 
 source $ZSH/oh-my-zsh.sh
 
-eval `dircolors ~/.dircolors`
-
+if [ -f ~/.dircolors ]; then
+  eval `dircolors ~/.dircolors`
+fi
 #export PATH=`echo $PATH | tr ':' '\n' | grep -v '/mnt/c/Program Files' | tr '\n' ':' | sed 's/.$//'`
 #export PATH=`echo $PATH | tr ':' '\n' | grep -v /mnt/c/Users/ | tr '\n' ':' | sed 's/.$//'`
 #export PATH=`echo $PATH | tr ':' '\n' | grep -v /mnt/c/ProgramData | tr '\n' ':' | sed 's/.$//'`
