@@ -2,6 +2,20 @@ $fedora_major_version = "33"
 $fedora_version = "33.20201230"
 $wsl_distro_root_path = "C:\WSLDistros"
 
+echo ""
+echo "Deploying a new Fedora $fedora_major_version WSL distribution!"
+echo ""
+
+if ((Get-Command "wsl.exe" -ErrorAction SilentlyContinue) -eq $null) 
+{ 
+  echo "Unable to find WSL installed!"
+  exit
+}
+
+echo ""
+echo "Setup starting..."
+echo ""
+
 # Create Temp dir
 echo "Creating temporary directories..."
 if (!(Test-Path "C:\Temp\")) {
@@ -54,3 +68,10 @@ if (Test-Path "C:\Temp\fedoraWSL\fedora_root.tar") {
 # Clean up
 echo "Cleaning up temporary files..."
 Remove-Item -LiteralPath "C:\Temp\fedoraWSL" -Force -Recurse
+
+echo ""
+echo "Setup complete!"
+echo ""
+
+echo "Your current WSL Distributions:"
+wsl -l -v
