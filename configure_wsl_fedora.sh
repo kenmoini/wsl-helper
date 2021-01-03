@@ -50,6 +50,16 @@ if [[ $CREATE_USER == "true" ]]; then
   read -p "Username: " NEW_USERNAME
   promptNewUserPasswordAndConfirmation
 fi
+if [[ $CREATE_USER == "true" ]]; then
+  echo ""
+  read -n 1 -p "Add user to wheel group (sudoer)? [Y/n] " YNPROMPT
+  case $YNPROMPT in
+    [Yy] ) export NEW_USER_TO_WHEEL="true"; echo ""; break;;
+    "" ) export NEW_USER_TO_WHEEL="true"; break;;
+    [Nn] ) export NEW_USER_TO_WHEEL="false"; echo ""; break;;
+    * ) echo -e "\nPlease answer yes or no.";;
+  esac
+fi
 
 while true; do
   echo ""
@@ -203,6 +213,8 @@ if [[ $INSTALL_ZSH == "true" ]]; then
 
   echo 'export PATH=$HOME/.local/bin:$PATH' > /etc/profile.d/local_bin.sh
   chmod +x /etc/profile.d/local_bin.sh
+
+  chsh --shell $(which zsh) $USER
 else
   echo ""
   echo "...SKIPPING..."
@@ -345,10 +357,14 @@ if [[ $INSTALL_K8S_OCP == "true" ]]; then
   chmod +x /usr/local/bin/odo*
   chmod +x /usr/local/bin/oc*
 
-  echo "source <(kubectl completion bash)" > /etc/profile.d/kubectl_completion.sh
+  echo 'if [ -n "$BASH" ]; then' > /etc/profile.d/kubectl_completion.sh
+  echo "  source <(kubectl completion bash)" >> /etc/profile.d/kubectl_completion.sh
+  echo "fi" >> /etc/profile.d/kubectl_completion.sh
   chmod +x /etc/profile.d/kubectl_completion.sh
 
-  echo "source <(oc completion bash)" > /etc/profile.d/oc_completion.sh
+  echo 'if [ -n "$BASH" ]; then' > /etc/profile.d/oc_completion.sh
+  echo "  source <(oc completion bash)" >> /etc/profile.d/oc_completion.sh
+  echo "fi" >> /etc/profile.d/oc_completion.sh
   echo "alias oc='oc --insecure-skip-tls-verify'" >> /etc/profile.d/oc_completion.sh
   chmod +x /etc/profile.d/oc_completion.sh
 else
@@ -364,6 +380,11 @@ if [[ $CREATE_USER == "true" ]]; then
   echo ""
   echo "Adding user..."
   useradd $NEW_USERNAME; echo $NEW_USER_PASSWORD | passwd $NEW_USERNAME --stdin
+
+  if [[ $NEW_USER_TO_WHEEL == "true" ]]; then
+    echo "Adding user to sudoers group 'wheel'..."
+    usermod -aG wheel $NEW_USERNAME
+  fi
 
   if [[ $INSTALL_ZSH == "true" ]]; then
     chsh --shell $(which zsh) $NEW_USERNAME
