@@ -9,6 +9,8 @@ function promptNewUserPasswordAndConfirmation {
     echo ""
     echo "PASSWORDS MUST MATCH!"
     promptNewUserPasswordAndConfirmation
+  else
+    echo ""
   fi
 }
 
