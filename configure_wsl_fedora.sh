@@ -18,8 +18,13 @@ function promptNewUserPasswordAndConfirmation {
   fi
 }
 
+echo ""
+echo "--------------------------------------------------------------------------------"
 echo "Welcome to the Windows Subsystem for Linux configuration script!"
-echo "This will configure a new WSL Fedora instance with some basics to make it feel a little more like home!"
+echo "This will configure a new WSL Fedora instance with some basics to make it"
+echo "feel a little more like home!"
+echo "--------------------------------------------------------------------------------"
+echo ""
 
 while true; do
   echo ""
@@ -131,6 +136,9 @@ echo ""
 echo "Starting WSL distro configuration..."
 
 echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[BASICS]"
+echo ""
 echo "Installing ${INSTALL_LANGPACK} language packages..."
 
 dnf install -qy langpacks-$INSTALL_LANGPACK glibc-langpack-$INSTALL_LANGPACK
@@ -148,21 +156,36 @@ echo "Installing basic packages..."
 dnf install -qy wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user
 
 ## Development Packages - DONE
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[DEV PKGS]"
 if [[ $INSTALL_DEV_PACKAGES == "true" ]]; then
   echo ""
   echo "Installing Developmental Tools..."
 
   dnf install -yq "@Development Tools"
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[PYTHON]"
 if [[ $INSTALL_PYTHON3 == "true" ]]; then
   echo ""
   echo "Installing Python 3..."
 
   dnf install -qy python3-pip python3 python3-argcomplete
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
 ## ZSH
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[ZSH]"
 if [[ $INSTALL_ZSH == "true" ]]; then
   echo ""
   echo "Installing ZSH, Oh My ZSH, Powerline fonts, thefuck..."
@@ -175,12 +198,19 @@ if [[ $INSTALL_ZSH == "true" ]]; then
   cp -R ~/.local /etc/skel
   cp -R ~/.oh-my-zsh /etc/skel
   curl -sL -o /etc/skel/.zshrc https://raw.githubusercontent.com/kenmoini/wsl-helper/main/config/zshrc
+  mv ~/.zshrc ~/.zshrc-default
   cp /etc/skel/.zshrc ~/.zshrc
 
   echo 'export PATH=$HOME/.local/bin:$PATH' > /etc/profile.d/local_bin.sh
   chmod +x /etc/profile.d/local_bin.sh
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[GOLANG]"
 if [[ $INSTALL_GOLANG == "true" ]]; then
   echo ""
   echo "Installing GOLANG..."
@@ -190,8 +220,14 @@ if [[ $INSTALL_GOLANG == "true" ]]; then
   echo 'export GOPATH=$HOME/go' > /etc/profile.d/golang_setup.sh
   echo 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin' >> /etc/profile.d/golang_setup.sh
   chmod +x /etc/profile.d/golang_setup.sh
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[ANSIBLE]"
 if [[ $INSTALL_ANSIBLE == "true" ]]; then
   echo ""
   echo "Installing Ansible..."
@@ -209,8 +245,14 @@ if [[ $INSTALL_ANSIBLE == "true" ]]; then
   register-python-argcomplete ansible-vault | tee /etc/bash_completion.d/python-ansible-vault >/dev/null
 
   sudo chmod +x /etc/bash_completion.d/python-a*
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[PHP]"
 if [[ $INSTALL_PHP == "true" ]]; then
   echo ""
   echo "Installing PHP and Composer..."
@@ -223,8 +265,14 @@ if [[ $INSTALL_PHP == "true" ]]; then
 
   echo 'export PATH=$HOME/.composer/vendor/bin:$PATH' > /etc/profile.d/composer_bin.sh
   chmod +x /etc/profile.d/composer_bin.sh
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[NODEJS]"
 if [[ $INSTALL_NODEJS == "true" ]]; then
   echo ""
   echo "Installing NodeJS, NPM, and Yarn..."
@@ -233,11 +281,17 @@ if [[ $INSTALL_NODEJS == "true" ]]; then
 
   echo 'export PATH=$HOME/.yarn/bin:$PATH' > /etc/profile.d/nodejs_bin.sh
   chmod +x /etc/profile.d/nodejs_bin.sh
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[KUBERNETES]"
 if [[ $INSTALL_K8S_OCP == "true" ]]; then
   echo ""
-  echo "Installing K8s and OCP stuff..."
+  echo "Installing K8s and OCP binaries..."
 
   ## Install OpenShift clients.
   curl -sL -o /tmp/oc-3.10.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.10.176/linux/oc.tar.gz
@@ -297,14 +351,24 @@ if [[ $INSTALL_K8S_OCP == "true" ]]; then
   echo "source <(oc completion bash)" > /etc/profile.d/oc_completion.sh
   echo "alias oc='oc --insecure-skip-tls-verify'" >> /etc/profile.d/oc_completion.sh
   chmod +x /etc/profile.d/oc_completion.sh
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
 
 ## Create a user - DONE
+echo ""
+echo "--------------------------------------------------------------------------------"
+echo "[USER]"
 if [[ $CREATE_USER == "true" ]]; then
+  echo ""
   echo "Adding user..."
   useradd $NEW_USERNAME; echo $NEW_USER_PASSWORD | passwd $NEW_USERNAME --stdin
 
   if [[ $INSTALL_ZSH == "true" ]]; then
     chsh --shell $(which zsh) $NEW_USERNAME
   fi
+else
+  echo ""
+  echo "...SKIPPING..."
 fi
