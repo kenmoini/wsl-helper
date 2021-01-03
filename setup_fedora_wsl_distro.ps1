@@ -8,12 +8,12 @@ echo ""
 
 if ((Get-Command "wsl.exe" -ErrorAction SilentlyContinue) -eq $null) 
 { 
-  echo "Unable to find WSL installed!"
-  exit
+  echo "Unable to find WSL installed!  Installing now..."
+  dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 }
 
 echo ""
-echo "Setup starting..."
+echo "Fedora $fedora_major_version distribution setup starting..."
 echo ""
 
 # Create Temp dir

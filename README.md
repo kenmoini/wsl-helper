@@ -5,9 +5,13 @@ You can deploy almost any Linux distribution to the Windows Subsystem for Linux 
 
 In order to quickly deploy a Fedora 33 distribution to WSL:
 
+## Prerequisites
+
+- A Windows 10 system with Powershell that can run Windows Subsystem for Linux: https://docs.microsoft.com/en-us/windows/wsl/faq#what-windows-skus-is-wsl-included-in
+
 ### 1) Enable WSL
 
-See instructions here: https://docs.microsoft.com/en-us/windows/wsl/install-win10#manual-installation-steps
+In Step 2, the Powershell script that is run will check for WSL being installed and if not found will install it, or if you'd like to do so manually, see the steps here: https://docs.microsoft.com/en-us/windows/wsl/install-win10#manual-installation-steps
 
 ### 2) Create a new Fedora WSL Distribution
 
