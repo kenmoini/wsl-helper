@@ -7,7 +7,7 @@ function promptNewUserPasswordAndConfirmation {
   read -s -p "Password: " NEW_USER_PASSWORD
   echo ""
   read -s -p "Confirm Password: " NEW_USER_PASSWORD_CONFIRM
-  if [ $NEW_USER_PASSWORD != $NEW_USER_PASSWORD_CONFIRM ]; then
+  if [[ $NEW_USER_PASSWORD != $NEW_USER_PASSWORD_CONFIRM ]]; then
     echo ""
     echo "PASSWORDS MUST MATCH!"
     promptNewUserPasswordAndConfirmation
@@ -23,12 +23,13 @@ while true; do
   echo ""
   read -n 1 -p "Create a new user? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) CREATE_USER="true"; break;;
+    [Yy] ) CREATE_USER="true" echo ""; break;;
+    "" ) CREATE_USER="true"; break;;
     [Nn] ) CREATE_USER="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
-if [ $CREATE_USER = "true" ]; then
+if [[ $CREATE_USER == "true" ]]; then
   echo ""
   read -p "Username: " NEW_USERNAME
   promptNewUserPasswordAndConfirmation
@@ -38,47 +39,48 @@ while true; do
   echo ""
   read -n 1 -p "Install basic development packages? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_DEV_PACKAGES="true"; break;;
+    [Yy] ) INSTALL_DEV_PACKAGES="true" echo ""; break;;
+    "" ) INSTALL_DEV_PACKAGES="true"; break;;
     [Nn] ) INSTALL_DEV_PACKAGES="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
 
 while true; do
-  echo ""
   read -n 1 -p "Install Python 3? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_PYTHON3="true"; break;;
+    [Yy] ) INSTALL_PYTHON3="true" echo ""; break;;
+    "" ) INSTALL_PYTHON3="true"; break;;
     [Nn] ) INSTALL_PYTHON3="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
 
 while true; do
-  echo ""
   read -n 1 -p "Install Ansible? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_ANSIBLE="true"; break;;
+    [Yy]) INSTALL_ANSIBLE="true" echo ""; break;;
+    "" ) INSTALL_ANSIBLE="true"; break;;
     [Nn] ) INSTALL_ANSIBLE="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
 
 while true; do
-  echo ""
   read -n 1 -p "Install PHP? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_PHP="true"; break;;
+    [Yy] ) INSTALL_PHP="true" echo ""; break;;
+    "" ) INSTALL_PHP="true"; break;;
     [Nn] ) INSTALL_PHP="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
 
 while true; do
-  echo ""
   read -n 1 -p "Install NodeJS? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] | "" ) INSTALL_NODEJS="true"; break;;
+    [Yy] ) INSTALL_NODEJS="true" echo ""; break;;
+    "" ) INSTALL_NODEJS="true"; break;;
     [Nn] ) INSTALL_NODEJS="false"; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
@@ -143,14 +145,14 @@ echo "Installing basic packages..."
 dnf install -qy wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user
 
 ## Development Packages - DONE
-if [ $INSTALL_DEV_PACKAGES = "true" ]; then
+if [[ $INSTALL_DEV_PACKAGES == "true" ]]; then
   echo ""
   echo "Installing Developmental Tools..."
 
   dnf install -yq "@Development Tools"
 fi
 
-if [ $INSTALL_PYTHON3 = "true" ]; then
+if [[ $INSTALL_PYTHON3 == "true" ]]; then
   echo ""
   echo "Installing Python 3..."
 
@@ -158,7 +160,7 @@ if [ $INSTALL_PYTHON3 = "true" ]; then
 fi
 
 ## ZSH
-if [ $INSTALL_ZSH = "true" ]; then
+if [[ $INSTALL_ZSH == "true" ]]; then
   echo ""
   echo "Installing ZSH, Oh My ZSH, Powerline fonts, thefuck..."
 
@@ -176,7 +178,7 @@ if [ $INSTALL_ZSH = "true" ]; then
   chmod +x /etc/profile.d/local_bin.sh
 fi
 
-if [ $INSTALL_GOLANG = "true" ]; then
+if [[ $INSTALL_GOLANG == "true" ]]; then
   echo ""
   echo "Installing GOLANG..."
 
@@ -187,26 +189,26 @@ if [ $INSTALL_GOLANG = "true" ]; then
   chmod +x /etc/profile.d/golang_setup.sh
 fi
 
-if [ $INSTALL_ANSIBLE = "true" ]; then
+if [[ $INSTALL_ANSIBLE == "true" ]]; then
   echo ""
   echo "Installing Ansible..."
 
   pip3 install ansible-base
   pip3 install argcomplete
-  register-python-argcomplete ansible | sudo tee /etc/bash_completion.d/python-ansible
-  register-python-argcomplete ansible-config | sudo tee /etc/bash_completion.d/python-ansible-config
-  register-python-argcomplete ansible-console | sudo tee /etc/bash_completion.d/python-ansible-console
-  register-python-argcomplete ansible-doc | sudo tee /etc/bash_completion.d/python-ansible-doc
-  register-python-argcomplete ansible-galaxy | sudo tee /etc/bash_completion.d/python-ansible-galaxy
-  register-python-argcomplete ansible-inventory | sudo tee /etc/bash_completion.d/python-ansible-inventory
-  register-python-argcomplete ansible-playbook | sudo tee /etc/bash_completion.d/python-ansible-playbook
-  register-python-argcomplete ansible-pull | sudo tee /etc/bash_completion.d/python-ansible-pull
-  register-python-argcomplete ansible-vault | sudo tee /etc/bash_completion.d/python-ansible-vault
+  register-python-argcomplete ansible | tee /etc/bash_completion.d/python-ansible >/dev/null
+  register-python-argcomplete ansible-config | tee /etc/bash_completion.d/python-ansible-config >/dev/null
+  register-python-argcomplete ansible-console | tee /etc/bash_completion.d/python-ansible-console >/dev/null
+  register-python-argcomplete ansible-doc | tee /etc/bash_completion.d/python-ansible-doc >/dev/null
+  register-python-argcomplete ansible-galaxy | tee /etc/bash_completion.d/python-ansible-galaxy >/dev/null
+  register-python-argcomplete ansible-inventory | tee /etc/bash_completion.d/python-ansible-inventory >/dev/null
+  register-python-argcomplete ansible-playbook | tee /etc/bash_completion.d/python-ansible-playbook >/dev/null
+  register-python-argcomplete ansible-pull | tee /etc/bash_completion.d/python-ansible-pull >/dev/null
+  register-python-argcomplete ansible-vault | tee /etc/bash_completion.d/python-ansible-vault >/dev/null
 
   sudo chmod +x /etc/bash_completion.d/python-ansible*
 fi
 
-if [ $INSTALL_PHP = "true" ]; then
+if [[ $INSTALL_PHP == "true" ]]; then
   echo ""
   echo "Installing PHP and Composer..."
 
@@ -220,7 +222,7 @@ if [ $INSTALL_PHP = "true" ]; then
   chmod +x /etc/profile.d/composer_bin.sh
 fi
 
-if [ $INSTALL_NODEJS = "true" ]; then
+if [[ $INSTALL_NODEJS == "true" ]]; then
   echo ""
   echo "Installing NodeJS, NPM, and Yarn..."
 
@@ -230,7 +232,7 @@ if [ $INSTALL_NODEJS = "true" ]; then
   chmod +x /etc/profile.d/nodejs_bin.sh
 fi
 
-if [ $INSTALL_K8S_OCP = "true" ]; then
+if [[ $INSTALL_K8S_OCP == "true" ]]; then
   echo ""
   echo "Installing K8s and OCP stuff..."
 
@@ -295,10 +297,11 @@ if [ $INSTALL_K8S_OCP = "true" ]; then
 fi
 
 ## Create a user - DONE
-if [ $CREATE_USER = "true" ]; then
+if [[ $CREATE_USER == "true" ]]; then
+  echo "Adding user..."
   useradd $NEW_USERNAME; echo $NEW_USER_PASSWORD | passwd $NEW_USERNAME --stdin
 
-  if [ $INSTALL_ZSH = "true" ]; then
+  if [[ $INSTALL_ZSH == "true" ]]; then
     chsh --shell $(which zsh) $NEW_USERNAME
   fi
 fi
