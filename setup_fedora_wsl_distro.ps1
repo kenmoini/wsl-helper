@@ -68,7 +68,7 @@ if (!(Test-Path "C:\Temp\fedoraWSL\xz\xz.zip")) {
 }
 
 echo "Downloading Fedora 33 system root..."
-if (!(Test-Path "C:\Temp\fedoraWSL\fedora_root.tar.xz") && !(Test-Path "C:\Temp\fedoraWSL\fedora_root.tar")) {
+if (!(Test-Path "C:\Temp\fedoraWSL\fedora_root.tar.xz") -and !(Test-Path "C:\Temp\fedoraWSL\fedora_root.tar")) {
   # Get Fedora system root file
   Invoke-WebRequest -Uri "https://github.com/fedora-cloud/docker-brew-fedora/raw/$fedora_major_version/x86_64/fedora-$fedora_version-x86_64.tar.xz" -OutFile "C:\Temp\fedoraWSL\fedora_root.tar.xz"
 
