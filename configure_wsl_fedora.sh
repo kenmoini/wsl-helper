@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 cd $HOME
-LANG=en_US.UTF-8
 
 function promptNewUserPasswordAndConfirmation {
   echo ""
