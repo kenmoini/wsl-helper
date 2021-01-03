@@ -15,6 +15,12 @@ See instructions here: https://docs.microsoft.com/en-us/windows/wsl/install-win1
 - Open a new Powershell terminal as an Administrator (open the Start Menu, type out "powershell", right click, Run as Administrator)
 - Run that script you downloaded, assuming it was downloaded in the Downloads folder under Pat's directory: `C:\Users\Pat\Downloads\setup_fedora_wsl_distro.ps1`
 
+Or you can do all that with this one liner:
+
+```powershell
+$ScriptFromGitHub = Invoke-WebRequest https://raw.githubusercontent.com/kenmoini/wsl-helper/main/setup_fedora_wsl_distro.ps1; Invoke-Expression $($ScriptFromGitHub.Content)
+```
+
 Now you should have a new WSL Distribution based on Fedora!
 
 Double-check by running `wsl -l -v` in the Powershell terminal.

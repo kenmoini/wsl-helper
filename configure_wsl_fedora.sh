@@ -14,11 +14,13 @@ while true; do
 done
 
 if [ $CREATE_USER = "true" ]; then
-  while true; do
-    echo ""
-    read -p "Username: " NEW_USERNAME
-    read -p "Password: " NEW_USER_PASSWORD
-  done
+  echo ""
+  read -p "Username: " NEW_USERNAME
+  read -s -p "Password: " NEW_USER_PASSWORD
+  read -s -p "Confirm Password: " NEW_USER_PASSWORD_CONFIRM
+  if [ $NEW_USER_PASSWORD -ne $NEW_USER_PASSWORD_CONFIRM ]; then
+    exit "PASSWORDS MUST MATCH!"
+  fi
 fi
 
 while true; do
@@ -101,24 +103,39 @@ while true; do
   esac
 done
 
+echo ""
+echo "Starting..."
+
 ## Do a basic system update - DONE
-dnf update -y
+echo ""
+echo "Updating base system..."
+
+dnf update -yq
 
 ## Do a basic package install - DONE
-dnf install -y wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq
+echo ""
+echo "Installing basic packages..."
+
+dnf install -qy chsh wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user
 
 ## Development Packages - DONE
 if [ $INSTALL_DEV_PACKAGES = "true" ]; then
-  dnf install -y "@Development Tools"
+  echo ""
+  echo "Installing Developmental Tools..."
+
+  dnf install -yq "@Development Tools"
 fi
 
 ## ZSH
 if [ $INSTALL_ZSH = "true" ]; then
-  dnf install -y zsh
+  echo ""
+  echo "Installing ZSH, Oh My ZSH, Powerline fonts, thefuck..."
+
+  dnf install -qy zsh
   git clone https://github.com/powerline/fonts.git --depth=1
   cd fonts && ./install.sh && cd .. && rm -rf fonts/
   pip3 install thefuck
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   cp -R ~/.local /etc/skel
   cp -R ~/.oh-my-zsh /etc/skel
   curl -o /etc/skel/.zshrc https://raw.githubusercontent.com/kenmoini/wsl-helper/main/config/zshrc
@@ -129,18 +146,27 @@ if [ $INSTALL_ZSH = "true" ]; then
 fi
 
 if [ $INSTALL_GOLANG = "true" ]; then
-  dnf install -y golang
+  echo ""
+  echo "Installing GOLANG..."
 
-  echo "export GOPATH=$HOME/go" > /etc/profile.d/golang_setup.sh
-  echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> /etc/profile.d/golang_setup.sh
+  dnf install -qy golang
+
+  echo 'export GOPATH=$HOME/go' > /etc/profile.d/golang_setup.sh
+  echo 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin' >> /etc/profile.d/golang_setup.sh
   chmod +x /etc/profile.d/golang_setup.sh
 fi
 
 if [ $INSTALL_PYTHON3 = "true" ]; then
-  dnf install -y python3-pip python3 python3-argcomplete
+  echo ""
+  echo "Installing Python 3..."
+
+  dnf install -qy python3-pip python3 python3-argcomplete
 fi
 
 if [ $INSTALL_ANSIBLE = "true" ]; then
+  echo ""
+  echo "Installing Ansible..."
+
   pip3 install ansible-base
   pip3 install argcomplete
   register-python-argcomplete ansible | sudo tee /etc/bash_completion.d/python-ansible
@@ -157,7 +183,10 @@ if [ $INSTALL_ANSIBLE = "true" ]; then
 fi
 
 if [ $INSTALL_PHP = "true" ]; then
-  dnf install -y php
+  echo ""
+  echo "Installing PHP and Composer..."
+
+  dnf install -qy php
   php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   php composer-setup.php
   php -r "unlink('composer-setup.php');"
@@ -168,30 +197,36 @@ if [ $INSTALL_PHP = "true" ]; then
 fi
 
 if [ $INSTALL_NODEJS = "true" ]; then
-  dnf install -y nodejs npm yarnpkg
+  echo ""
+  echo "Installing NodeJS, NPM, and Yarn..."
+
+  dnf install -qy nodejs npm yarnpkg
 
   echo 'export PATH=$HOME/.yarn/bin:$PATH' > /etc/profile.d/nodejs_bin.sh
   chmod +x /etc/profile.d/nodejs_bin.sh
 fi
 
 if [ $INSTALL_K8S_OCP = "true" ]; then
+  echo ""
+  echo "Installing K8s and OCP stuff..."
+
   ## Install OpenShift clients.
-  curl -s -o /tmp/oc-3.10.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.10.176/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-3.10.tar.gz oc-3.10
-  curl -s -o /tmp/oc-3.11.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.11.153/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-3.11.tar.gz oc-3.11
-  curl -s -o /tmp/oc-4.1.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.1/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-4.1.tar.gz oc-4.1
-  curl -s -o /tmp/oc-4.2.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.2/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-4.2.tar.gz oc-4.2
-  curl -s -o /tmp/oc-4.3.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.3/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-4.3.tar.gz oc-4.3
-  curl -s -o /tmp/oc-4.4.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.4/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-4.4.tar.gz oc-4.4
-  curl -s -o /tmp/oc-4.5.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.5/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-4.5.tar.gz oc-4.5
-  curl -s -o /tmp/oc-4.6.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.6/linux/oc.tar.gz
-  tar -C /usr/local/bin -zxf /tmp/oc-4.5.tar.gz oc-4.6
+  curl -sL -o /tmp/oc-3.10.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.10.176/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-3.10 -zxf /tmp/oc-3.10.tar.gz oc
+  curl -sL -o /tmp/oc-3.11.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.11.153/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-3.11 -zxf /tmp/oc-3.11.tar.gz oc
+  curl -sL -o /tmp/oc-4.1.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.1/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-4.1 -zxf /tmp/oc-4.1.tar.gz oc
+  curl -sL -o /tmp/oc-4.2.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.2/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-4.2 -zxf /tmp/oc-4.2.tar.gz oc
+  curl -sL -o /tmp/oc-4.3.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.3/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-4.3 -zxf /tmp/oc-4.3.tar.gz oc
+  curl -sL -o /tmp/oc-4.4.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.4/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-4.4 -zxf /tmp/oc-4.4.tar.gz oc
+  curl -sL -o /tmp/oc-4.5.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.5/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-4.5 -zxf /tmp/oc-4.5.tar.gz oc
+  curl -sL -o /tmp/oc-4.6.tar.gz https://mirror.openshift.com/pub/openshift-v4/clients/oc/4.6/linux/oc.tar.gz
+  tar -C /usr/local/bin/oc-4.6 -zxf /tmp/oc-4.5.tar.gz oc
   rm /tmp/oc*.tar.gz
 
   curl -sL -o /usr/local/bin/odo-0.0.16 https://github.com/openshift/odo/releases/download/v0.0.16/odo-linux-amd64
