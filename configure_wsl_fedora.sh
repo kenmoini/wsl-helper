@@ -13,6 +13,8 @@ function promptNewUserPasswordAndConfirmation {
     promptNewUserPasswordAndConfirmation
   else
     echo ""
+    export NEW_USER_PASSWORD=$NEW_USER_PASSWORD
+    export NEW_USER_PASSWORD_CONFIRM=$NEW_USER_PASSWORD_CONFIRM
   fi
 }
 
@@ -20,12 +22,20 @@ echo "Welcome to the Windows Subsystem for Linux configuration script!"
 echo "This will configure a new WSL Fedora instance with some basics to make it feel a little more like home!"
 
 while true; do
+  read -n 2 -p "Language pack to install [en] " LANGPACK
+  case $LANGPACK in
+    "" ) export INSTALL_LANGPACK="en"; break;;
+    * ) export INSTALL_LANGPACK=$LANGPACK; break;;
+  esac
+done
+
+while true; do
   echo ""
   read -n 1 -p "Create a new user? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) CREATE_USER="true" echo ""; break;;
-    "" ) CREATE_USER="true"; break;;
-    [Nn] ) CREATE_USER="false"; break;;
+    [Yy] ) export CREATE_USER="true"; echo ""; break;;
+    "" ) export CREATE_USER="true"; break;;
+    [Nn] ) export CREATE_USER="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -39,9 +49,9 @@ while true; do
   echo ""
   read -n 1 -p "Install basic development packages? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_DEV_PACKAGES="true" echo ""; break;;
-    "" ) INSTALL_DEV_PACKAGES="true"; break;;
-    [Nn] ) INSTALL_DEV_PACKAGES="false"; break;;
+    [Yy] ) export INSTALL_DEV_PACKAGES="true"; echo ""; break;;
+    "" ) export INSTALL_DEV_PACKAGES="true"; break;;
+    [Nn] ) export INSTALL_DEV_PACKAGES="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -49,9 +59,9 @@ done
 while true; do
   read -n 1 -p "Install Python 3? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_PYTHON3="true" echo ""; break;;
-    "" ) INSTALL_PYTHON3="true"; break;;
-    [Nn] ) INSTALL_PYTHON3="false"; break;;
+    [Yy] ) export INSTALL_PYTHON3="true"; echo ""; break;;
+    "" ) export INSTALL_PYTHON3="true"; break;;
+    [Nn] ) export INSTALL_PYTHON3="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -59,9 +69,9 @@ done
 while true; do
   read -n 1 -p "Install Ansible? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy]) INSTALL_ANSIBLE="true" echo ""; break;;
-    "" ) INSTALL_ANSIBLE="true"; break;;
-    [Nn] ) INSTALL_ANSIBLE="false"; break;;
+    [Yy]) export INSTALL_ANSIBLE="true"; echo ""; break;;
+    "" ) export INSTALL_ANSIBLE="true"; break;;
+    [Nn] ) export INSTALL_ANSIBLE="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -69,9 +79,9 @@ done
 while true; do
   read -n 1 -p "Install PHP? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_PHP="true" echo ""; break;;
-    "" ) INSTALL_PHP="true"; break;;
-    [Nn] ) INSTALL_PHP="false"; break;;
+    [Yy] ) export INSTALL_PHP="true"; echo ""; break;;
+    "" ) export INSTALL_PHP="true"; break;;
+    [Nn] ) export INSTALL_PHP="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -79,9 +89,9 @@ done
 while true; do
   read -n 1 -p "Install NodeJS? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_NODEJS="true" echo ""; break;;
-    "" ) INSTALL_NODEJS="true"; break;;
-    [Nn] ) INSTALL_NODEJS="false"; break;;
+    [Yy] ) export INSTALL_NODEJS="true"; echo ""; break;;
+    "" ) export INSTALL_NODEJS="true"; break;;
+    [Nn] ) export INSTALL_NODEJS="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -89,9 +99,9 @@ done
 while true; do
   read -n 1 -p "Install GOLANG? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_GOLANG="true" echo ""; break;;
-    "" ) INSTALL_GOLANG="true"; break;;
-    [Nn] ) INSTALL_GOLANG="false"; break;;
+    [Yy] ) export INSTALL_GOLANG="true"; echo ""; break;;
+    "" ) export INSTALL_GOLANG="true"; break;;
+    [Nn] ) export INSTALL_GOLANG="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -99,9 +109,9 @@ done
 while true; do
   read -n 1 -p "Install ZSH and Oh My ZSH? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_ZSH="true" echo ""; break;;
-    "" ) INSTALL_ZSH="true"; break;;
-    [Nn] ) INSTALL_ZSH="false"; break;;
+    [Yy] ) export INSTALL_ZSH="true"; echo ""; break;;
+    "" ) export INSTALL_ZSH="true"; break;;
+    [Nn] ) export INSTALL_ZSH="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
@@ -109,23 +119,15 @@ done
 while true; do
   read -n 1 -p "Install Kubernetes and OpenShift binaries? [Y/n] " YNPROMPT
   case $YNPROMPT in
-    [Yy] ) INSTALL_K8S_OCP="true" echo ""; break;;
-    "" ) INSTALL_K8S_OCP="true"; break;;
-    [Nn] ) INSTALL_K8S_OCP="false"; break;;
+    [Yy] ) export INSTALL_K8S_OCP="true"; echo ""; break;;
+    "" ) export INSTALL_K8S_OCP="true"; break;;
+    [Nn] ) export INSTALL_K8S_OCP="false"; echo ""; break;;
     * ) echo -e "\nPlease answer yes or no.";;
   esac
 done
 
-while true; do
-  read -n 2 -p "Language pack to install [en] " LANGPACK
-  case $LANGPACK in
-    "" ) INSTALL_LANGPACK="en"; break;;
-    * ) INSTALL_LANGPACK=$LANGPACK;;
-  esac
-done
-
 echo ""
-echo "Starting..."
+echo "Starting WSL distro configuration..."
 
 echo ""
 echo "Installing ${INSTALL_LANGPACK} language packages..."
@@ -168,7 +170,7 @@ if [[ $INSTALL_ZSH == "true" ]]; then
   git clone https://github.com/powerline/fonts.git --depth=1
   cd fonts && ./install.sh && cd .. && rm -rf fonts/
   pip3 install thefuck
-  RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  RUNZSH=no CHSH=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   cp -R ~/.local /etc/skel
   cp -R ~/.oh-my-zsh /etc/skel
   curl -o /etc/skel/.zshrc https://raw.githubusercontent.com/kenmoini/wsl-helper/main/config/zshrc
