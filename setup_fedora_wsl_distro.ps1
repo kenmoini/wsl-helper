@@ -1,11 +1,12 @@
-$fedora_major_version = "33"
-$fedora_version = "33.20201230"
-$wsl_distro_root_path = "C:\WSLDistros"
-
 param (
   [switch]$reset = $false,
   [switch]$remove = $false
 )
+
+$fedora_major_version = "33"
+$fedora_version = "33.20201230"
+$wsl_distro_root_path = "C:\WSLDistros"
+
 if ($reset) {
   echo ""
   echo "Removing Fedora$fedora_major_version from current WSL distributions and resetting..."
