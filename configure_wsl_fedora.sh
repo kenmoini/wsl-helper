@@ -21,6 +21,7 @@ function promptNewUserPasswordAndConfirmation {
 echo ""
 echo "--------------------------------------------------------------------------------"
 echo "Welcome to the Windows Subsystem for Linux configuration script!"
+echo ""
 echo "This will configure a new WSL Fedora instance with some basics to make it"
 echo "feel a little more like home!"
 echo "--------------------------------------------------------------------------------"
@@ -165,8 +166,9 @@ dnf update -yq
 echo ""
 echo "Installing basic packages..."
 
+dnf install -qy wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user cracklib-dicts
 dnf -yq copr enable wslutilities/wslu
-dnf install -qy wget curl sudo ncurses dnf-plugins-core dnf-utils passwd findutils nano openssl openssh-clients procps-ng git bash-completion jq util-linux-user cracklib-dicts wslu
+dnf install -qy wslu
 
 ## Development Packages - DONE
 echo ""
