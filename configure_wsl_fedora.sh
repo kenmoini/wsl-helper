@@ -51,14 +51,16 @@ if [[ $CREATE_USER == "true" ]]; then
   promptNewUserPasswordAndConfirmation
 fi
 if [[ $CREATE_USER == "true" ]]; then
-  echo ""
-  read -n 1 -p "Add user to wheel group (sudoer)? [Y/n] " YNPROMPT
-  case $YNPROMPT in
-    [Yy] ) export NEW_USER_TO_WHEEL="true"; echo ""; break;;
-    "" ) export NEW_USER_TO_WHEEL="true"; break;;
-    [Nn] ) export NEW_USER_TO_WHEEL="false"; echo ""; break;;
-    * ) echo -e "\nPlease answer yes or no.";;
-  esac
+  while true; do
+    echo ""
+    read -n 1 -p "Add user to wheel group (sudoer)? [Y/n] " YNPROMPT
+    case $YNPROMPT in
+      [Yy] ) export NEW_USER_TO_WHEEL="true"; echo ""; break;;
+      "" ) export NEW_USER_TO_WHEEL="true"; break;;
+      [Nn] ) export NEW_USER_TO_WHEEL="false"; echo ""; break;;
+      * ) echo -e "\nPlease answer yes or no.";;
+    esac
+  done
 fi
 
 while true; do
