@@ -5,7 +5,7 @@ param (
 )
 
 $fedora_major_version = "33"
-$fedora_version = "33.20201230"
+$fedora_version = "33.20210217"
 $wsl_distro_root_path = "C:\WSLDistros"
 
 if ($reset) {
